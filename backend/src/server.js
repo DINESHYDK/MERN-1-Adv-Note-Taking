@@ -1,7 +1,9 @@
 import express from 'express';
+import dotenv from "dotenv";
+import cors from "cors";
+
 import notesRoutes from "./routes/notesRoute.js";
 import {connectDB} from "./config/db.js";
-import dotenv from "dotenv";
 import rateLimiter from "./middleware/rateLimiter.js";
 
 dotenv.config();
@@ -11,8 +13,11 @@ const app = express();
 const PORT = process.env.PORT || 5001;
 
 // middleware
+app.use(cors({
+    origin: "http://localhost:5173" // For now just the local variable, after hosting i will use the env variable
+}));
 app.use(express.json());
-app.use(rateLimiter)
+app.use(rateLimiter);
 
 app.use("/api/notes", notesRoutes);
 
@@ -33,8 +38,6 @@ connectDB().then(() => {
 -> We can also create our own middleware functions.
 */
 
-
-// Important: mongodb+srv://24je0723_db_user:cq2twfDUoagBqLio@cluster0.0cxzhip.mongodb.net/?appName=Cluster0
 
 // What is an End Point?
 // An end point is a specific URL + HTTP that will direct us to a specific resource

@@ -2,6 +2,7 @@
   "dependencies": {
     "@upstash/ratelimit": "^2.0.8",
     "@upstash/redis": "^1.36.2",
+    "cors": "^2.8.6",
     "dotenv": "^17.2.4",
     "env": "^0.0.2",
     "express": "^4.18.2",
