@@ -1,15 +1,41 @@
-# Dependencies
+# ---------------------------------
+#  Universal Ignores (Recursive)
+# ---------------------------------
+# This will ignore node_modules in root, frontend, AND backend automatically
 node_modules/
 
-# Environment Variables (CRITICAL!)
+# ---------------------------------
+#  Environment Variables (CRITICAL)
+# ---------------------------------
+# Ignores .env in all folders
 .env
+.env.local
+.env.*.local
 
-# JetBrains / WebStorm Settings
+# ---------------------------------
+#  Frontend Production Build
+# ---------------------------------
+# Ignore the "dist" folder created when you run 'npm run build'
+dist/
+build/
+
+# ---------------------------------
+#  Logs & Debugging
+# ---------------------------------
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ---------------------------------
+#  JetBrains / WebStorm Settings
+# ---------------------------------
 .idea/
 *.iws
 *.iml
 *.ipr
 
-# OS generated files
+# ---------------------------------
+#  OS Generated Files
+# ---------------------------------
 .DS_Store
 Thumbs.db

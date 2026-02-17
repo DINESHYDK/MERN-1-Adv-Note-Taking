@@ -1,4 +1,5 @@
 import rateLimit from "../config/upstash.js";
+import "dotenv/config";
 
 const rateLimiter = async (req, res, next) => {
     try {
