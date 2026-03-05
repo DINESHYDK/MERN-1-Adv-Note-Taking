@@ -6,9 +6,9 @@ import {useEffect, useState} from "react";
 const THEMES = [
     "valentine",  // Pink pastel (default)
     "lemonade",   // Fresh green light
-    "abyss",      // Deep dark blue
+    "aqua",      // Deep dark blue
     "dracula",    // Classic dark purple
-    "nord",       // Clean arctic light
+    "emerald",       // Clean arctic light
     "autumn",     // Warm earthy tones
 ];
 

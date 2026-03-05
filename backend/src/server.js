@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 5001;
 
 // middleware
 app.use(cors({
-    origin: "http://localhost:5173" // For now just the local variable, after hosting i will use the env variable
+    origin: process.env.CLIENT_URL // Reads from .env — change only there when deploying
 }));
 app.use(express.json());
 app.use(rateLimiter);

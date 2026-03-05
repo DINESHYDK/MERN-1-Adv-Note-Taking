@@ -93,8 +93,8 @@ const NotePreviewPage = () => {
         <div className="min-h-screen bg-base-200">
             <div className="container mx-auto px-4 py-8">
                 <div className="max-w-2xl mx-auto">
-                    <div className="flex items-center justify-between mb-6">
-                        <Link to="/" className="btn btn-ghost">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-6">
+                        <Link to="/" className="btn btn-ghost btn-sm sm:btn-md">
                             <ArrowLeftIcon className="h-5 w-5"/>
                             Back to Notes
                         </Link>
@@ -103,30 +103,32 @@ const NotePreviewPage = () => {
                                 setIsEditing(!isEditing);
                                 setTitle(note.title);
                                 setContent(note.content);
-                            }} className="btn btn-primary btn-outline">
-                                <PenSquareIcon className="h-5 w-5"/>
-                                {isEditing ? "Cancel" : "Edit Note"}
+                            }} className="btn btn-primary btn-outline btn-sm sm:btn-md">
+                                <PenSquareIcon className="h-4 w-4 sm:h-5 sm:w-5"/>
+                                <span className="hidden sm:inline">{isEditing ? "Cancel" : "Edit Note"}</span>
+                                <span className="sm:hidden">{isEditing ? "Cancel" : "Edit"}</span>
                             </button>
                             {/* onClick just opens the modal — doesn't delete yet */}
-                            <button onClick={openDeleteModal} className="btn btn-error btn-outline">
-                                <Trash2Icon className="h-5 w-5"/>
-                                Delete Note
+                            <button onClick={openDeleteModal} className="btn btn-error btn-outline btn-sm sm:btn-md">
+                                <Trash2Icon className="h-4 w-4 sm:h-5 sm:w-5"/>
+                                <span className="hidden sm:inline">Delete Note</span>
+                                <span className="sm:hidden">Delete</span>
                             </button>
                         </div>
                     </div>
                     <div className="card bg-base-100 shadow-md">
-                        <div className="card-body">
+                        <div className="card-body p-4 sm:p-8">
                             {isEditing ? (
                                 <>
                                     <input
                                         type="text"
-                                        className="input input-bordered w-full text-2xl font-bold mb-4"
+                                        className="input input-bordered w-full text-lg sm:text-2xl font-bold mb-4"
                                         value={title}
                                         onChange={(e) => setTitle(e.target.value)}
                                         placeholder="Note Title"
                                     />
                                     <textarea
-                                        className="textarea textarea-bordered w-full h-40"
+                                        className="textarea textarea-bordered w-full h-32 sm:h-40"
                                         value={content}
                                         onChange={(e) => setContent(e.target.value)}
                                         placeholder="Note Content"
@@ -143,7 +145,7 @@ const NotePreviewPage = () => {
                                 </>
                             ) : (
                                 <>
-                                    <h2 className="card-title text-2xl font-bold">{note.title}</h2>
+                                    <h2 className="card-title text-xl sm:text-2xl font-bold">{note.title}</h2>
                                     <p className="text-base-content/70 mt-4 whitespace-pre-wrap">{note.content}</p>
                                     <div className="mt-4 text-xs text-base-content/50">
                                         {note.createdAt ? formateDate(note.createdAt) : "No Date"}

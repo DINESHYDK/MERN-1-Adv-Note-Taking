@@ -1,7 +1,7 @@
 import {PenSquareIcon, Trash2Icon} from "lucide-react";
 import {Link} from "react-router";
 import {formateDate} from "../lib/utils.js";
-import axios from "axios";
+import api from "../lib/axios.js";
 import toast from "react-hot-toast";
 import {useState} from "react";
 import ConfirmModal from "./ConfirmModal.jsx";

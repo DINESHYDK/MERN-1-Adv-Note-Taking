@@ -11,6 +11,6 @@ export default {
         require('daisyui'), // 👈 This line ONLY works with DaisyUI v4
     ],
     daisyui: {
-        themes: ["valentine", "lemonade", "abyss", "dracula", "nord", "autumn"],
+        themes: ["valentine", "lemonade", "aqua", "dracula", "emerald", "autumn"],
     },
 }

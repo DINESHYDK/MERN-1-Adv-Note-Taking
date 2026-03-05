@@ -3,7 +3,7 @@ import {useEffect, useState} from "react";
 import RateLimitUI from "../components/RateLimitUI.jsx";
 import toast from "react-hot-toast";
 import NoteCard from "../components/NoteCard.jsx";
-import axios from "axios";
+import api from "../lib/axios"; // Changed from 'import axios from "axios"'
 import NotesNotFound from "../components/NotesNotFound.jsx";
 
 const HomePage = () => {
@@ -18,10 +18,6 @@ const HomePage = () => {
                 console.log(res.data);
                 setNotes(res.data);
                 setIsRateLimit(false);
-                // setNotes(data);
-                // setLoading(false);
-                //     We have the CORS (Cross-Origin Resource Sharing) error here.
-                //     This means that the frontend and backend are not on the same origin.
             } catch (error) {
                 console.log("Error in fetching notes:", error.message);
                 if (error.response?.status === 429) {
@@ -35,9 +31,8 @@ const HomePage = () => {
         };
 
         getNotes();
-        // Without calling this function, it will be impossible to run the code
     }, []);
-    // dependency array was empty means that the useEffect function runs for only once..
+
     return (
         <div className="min-h-screen">
             <NavBar/>
