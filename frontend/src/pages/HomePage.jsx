@@ -4,6 +4,7 @@ import RateLimitUI from "../components/RateLimitUI.jsx";
 import toast from "react-hot-toast";
 import NoteCard from "../components/NoteCard.jsx";
 import axios from "axios";
+import NotesNotFound from "../components/NotesNotFound.jsx";
 
 const HomePage = () => {
     const [isRateLimit, setIsRateLimit] = useState(false);
@@ -49,10 +50,14 @@ const HomePage = () => {
                 {notes.length > 0 && !isRateLimit &&
                     (<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {notes.map((note) => (
-                            <NoteCard key={note.id} note={note}/>
+                            <NoteCard key={note._id} note={note} setNotes={setNotes}/>
                         ))
                         }
                     </div>)}
+
+                {notes.length === 0 && !loading && !isRateLimit && (
+                    <NotesNotFound/>
+                )}
 
             </div>
         </div>
