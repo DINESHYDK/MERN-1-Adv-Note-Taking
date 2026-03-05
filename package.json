@@ -1,0 +1,24 @@
+{
+  "name": "mern-1-adv-note-taking",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "npm install --prefix backend && npm install --prefix frontend && npm run build --prefix frontend",
+    "start": "npm run start --prefix backend",
+    "dev": "nodemon backend/src/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DINESHYDK/MERN-1-Adv-Note-Taking.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/DINESHYDK/MERN-1-Adv-Note-Taking/issues"
+  },
+  "homepage": "https://github.com/DINESHYDK/MERN-1-Adv-Note-Taking#readme"
+}
