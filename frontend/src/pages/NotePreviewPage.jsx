@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import {Link, useNavigate, useParams} from "react-router";
 import {ArrowLeftIcon, LoaderIcon, PenSquareIcon, Trash2Icon} from "lucide-react";
-import axios from "axios";
+import api from "../lib/axios.js";
 import toast from "react-hot-toast";
 import {formateDate} from "../lib/utils.js";
 import ConfirmModal from "../components/ConfirmModal.jsx";
@@ -30,7 +30,7 @@ const NotePreviewPage = () => {
     // Step 2: When user clicks "Confirm" inside the modal, NOW actually delete
     const confirmDelete = async () => {
         try {
-            await axios.delete(`http://localhost:5001/api/notes/${note._id}`);
+            await api.delete(`/${note._id}`);
             toast.success("Note Deleted Successfully");
             setShowDeleteModal(false); // Close the modal
             navigate("/");
@@ -48,7 +48,7 @@ const NotePreviewPage = () => {
 
         setSaving(true);
         try {
-            await axios.put(`http://localhost:5001/api/notes/${note._id}`, {
+            await api.put(`/${note._id}`, {
                 title,
                 content,
             });
@@ -66,8 +66,8 @@ const NotePreviewPage = () => {
     useEffect(() => {
         const fetchNote = async () => {
             try {
-                const res = await fetch(`http://localhost:5001/api/notes/${id}`);
-                const data = await res.json();
+                const res = await api.get(`/${id}`);
+                const data = res.data;
                 setNote(data);
                 setTitle(data.title);
                 setContent(data.content);

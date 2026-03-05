@@ -21,7 +21,7 @@ const NoteCard = ({note, setNotes}) => {
     const confirmDelete = async () => {
         const noteId = note._id;
         try {
-            await axios.delete(`http://localhost:5001/api/notes/${noteId}`);
+            await api.delete(`/${noteId}`);
 
             // Update UI instantly by filtering out the deleted note
             setNotes((prevNotes) => prevNotes.filter((n) => n._id !== noteId));
