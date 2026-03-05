@@ -4,6 +4,7 @@ import {ArrowLeftIcon, LoaderIcon, PenSquareIcon, Trash2Icon} from "lucide-react
 import axios from "axios";
 import toast from "react-hot-toast";
 import {formateDate} from "../lib/utils.js";
+import ConfirmModal from "../components/ConfirmModal.jsx";
 
 
 const NotePreviewPage = () => {
@@ -14,16 +15,24 @@ const NotePreviewPage = () => {
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
 
+    // This state controls the modal visibility (true = show, false = hide)
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+
     const navigate = useNavigate();
 
     const {id} = useParams();
 
-    const handleDelete = async () => {
-        if (!window.confirm("Are you sure you want to delete this note?")) return;
+    // Step 1: When user clicks "Delete Note" button, just SHOW the modal (don't delete yet)
+    const openDeleteModal = () => {
+        setShowDeleteModal(true);
+    };
 
+    // Step 2: When user clicks "Confirm" inside the modal, NOW actually delete
+    const confirmDelete = async () => {
         try {
             await axios.delete(`http://localhost:5001/api/notes/${note._id}`);
             toast.success("Note Deleted Successfully");
+            setShowDeleteModal(false); // Close the modal
             navigate("/");
         } catch (error) {
             console.log("Error in handleDelete", error);
@@ -98,7 +107,8 @@ const NotePreviewPage = () => {
                                 <PenSquareIcon className="h-5 w-5"/>
                                 {isEditing ? "Cancel" : "Edit Note"}
                             </button>
-                            <button onClick={handleDelete} className="btn btn-error btn-outline">
+                            {/* onClick just opens the modal — doesn't delete yet */}
+                            <button onClick={openDeleteModal} className="btn btn-error btn-outline">
                                 <Trash2Icon className="h-5 w-5"/>
                                 Delete Note
                             </button>
@@ -144,6 +154,25 @@ const NotePreviewPage = () => {
                     </div>
                 </div>
             </div>
+
+            {/*
+              ConfirmModal — Our custom centered modal (replaces ugly window.confirm)
+
+              Props we're passing:
+                isOpen    = showDeleteModal   → true = show modal, false = hide it
+                title     = "Delete Note"     → heading text at the top of the modal
+                message   = "Are you sure..." → body text asking user to confirm
+                onConfirm = confirmDelete     → function called when user clicks "Confirm"
+                onCancel  = () => setShowDeleteModal(false) → closes the modal on "Cancel"
+            */}
+            <ConfirmModal
+                isOpen={showDeleteModal}
+                title="Delete Note"
+                message="Are you sure you want to delete this note? This action cannot be undone."
+                onConfirm={confirmDelete}
+                onCancel={() => setShowDeleteModal(false)}
+            />
+
         </div>
     );
 };

@@ -1,18 +1,25 @@
 import {PenSquareIcon, Trash2Icon} from "lucide-react";
-import {Link} from "react-router"; // ✅ Correct import for web projects
-import {formateDate} from "../lib/utils.js"; // (Make sure this path matches your file structure)
+import {Link} from "react-router";
+import {formateDate} from "../lib/utils.js";
 import axios from "axios";
 import toast from "react-hot-toast";
-import notesPreview from "../pages/NotePreviewPage";
+import {useState} from "react";
+import ConfirmModal from "./ConfirmModal.jsx";
 
 const NoteCard = ({note, setNotes}) => {
 
-    const handleDelete = async (e) => {
-        e.preventDefault(); // Stop the link from navigating
-        const noteId = note._id; // ✅ CRITICAL: Use _id for MongoDB
+    // State to control the delete confirmation modal (true = show, false = hide)
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-        if (!window.confirm("Are you sure you want to delete this note?")) return;
+    // Step 1: Open the modal when delete icon is clicked (don't delete yet)
+    const openDeleteModal = (e) => {
+        e.preventDefault(); // Stop the Link from navigating
+        setShowDeleteModal(true);
+    };
 
+    // Step 2: Actually delete when user clicks "Confirm" in the modal
+    const confirmDelete = async () => {
+        const noteId = note._id;
         try {
             await axios.delete(`http://localhost:5001/api/notes/${noteId}`);
 
@@ -23,16 +30,19 @@ const NoteCard = ({note, setNotes}) => {
         } catch (error) {
             console.log("Error in handleDelete", error);
             toast.error("Failed to delete note");
+        } finally {
+            setShowDeleteModal(false); // Close modal either way
         }
-    }
+    };
 
-    return (<div
+    return (<>
+        <div
             className="card bg-base-100 shadow-md hover:shadow-xl transition-all duration-300 border-t-4 border-primary">
             <div className="card-body p-5">
 
                 {/* Title: Clickable to go to details */}
                 <Link
-                    to={`/note/${note._id}`} // ✅ Use _id here
+                    to={`/note/${note._id}`}
                     className="card-title text-lg font-bold text-base-content hover:text-primary transition-colors"
                 >
                     {note.title}
@@ -46,26 +56,24 @@ const NoteCard = ({note, setNotes}) => {
                 {/* Footer: Date & Actions */}
                 <div className="card-actions justify-between items-center mt-4">
                     <span className="text-xs font-medium text-base-content/50">
-                        {/* Ensure your formateDate function handles the date string correctly */}
                         {note.createdAt ? formateDate(note.createdAt) : "No Date"}
                     </span>
 
                     <div className="flex items-center gap-2">
-                        {/* Edit Button */}
+                        {/* Edit Button — navigates to the note preview/edit page */}
                         <Link
-                            to={`/note/${note._id}`} // ✅ Use _id here
+                            to={`/note/${note._id}`}
                             className="btn btn-ghost btn-xs btn-square tooltip tooltip-bottom"
                             data-tip="Edit"
-                            onClick={notesPreview}
                         >
                             <PenSquareIcon className="size-4 text-base-content/70"/>
                         </Link>
 
-                        {/* Delete Button */}
+                        {/* Delete Button — opens the confirmation modal */}
                         <button
                             className="btn btn-ghost btn-xs btn-square text-error tooltip tooltip-bottom"
                             data-tip="Delete"
-                            onClick={handleDelete} // Clean function call
+                            onClick={openDeleteModal}
                         >
                             <Trash2Icon className="size-4"/>
                         </button>
@@ -73,7 +81,17 @@ const NoteCard = ({note, setNotes}) => {
                 </div>
 
             </div>
-        </div>);
+        </div>
+
+        {/* Confirmation modal for delete — same reusable ConfirmModal component */}
+        <ConfirmModal
+            isOpen={showDeleteModal}
+            title="Delete Note"
+            message="Are you sure you want to delete this note? This action cannot be undone."
+            onConfirm={confirmDelete}
+            onCancel={() => setShowDeleteModal(false)}
+        />
+    </>);
 };
 
 export default NoteCard;
